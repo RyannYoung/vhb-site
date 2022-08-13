@@ -269,6 +269,13 @@ const App = () => {
             </div>
           </div>
 
+          <h2 className="font-primary text-orange-900">Want to know more?</h2>
+          <p className="font-secondary">
+            This product is still <b>early development</b>. Many features are
+            subject to change. If you have any ideas, or suggestions please let
+            us know.
+          </p>
+
           <h2 className="font-primary text-orange-900">Contact the team</h2>
           <p className="font-secondary">
             For any enquiries about the project. Please contact the team at{" "}
