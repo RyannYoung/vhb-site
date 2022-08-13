@@ -273,7 +273,7 @@ const App = () => {
           <p className="font-secondary">
             This product is still <b>early development</b>. Many features are
             subject to change. If you have any ideas, or suggestions please let
-            us know.
+            us know. Test pull
           </p>
 
           <h2 className="font-primary text-orange-900">Contact the team</h2>
