@@ -10,7 +10,13 @@ import VhbBanner from "./assets/banner.png";
 import VhbSequence from "./assets/vhb_sequence.gif";
 import { AiFillCloseCircle, AiFillWarning } from "react-icons/ai";
 import { useState } from "react";
+import Modal from "./components/Modal";
+import Terminal from "./components/Terminal";
 
+import { getStorage, getDownloadURL, ref } from "firebase/storage";
+import { initializeApp } from "firebase/app";
+import { BiAnalyse } from "react-icons/bi";
+import { HiOutlineDocumentDownload } from "react-icons/hi";
 const container: Variants = {
   hidden: { opacity: 0 },
   show: {
@@ -28,11 +34,41 @@ const item = {
   show: { opacity: 1 },
 };
 
+const firebaseConfig = {
+  apiKey: "AIzaSyCiZ5wObTYlbnm2AjzsYJX7eSH-TlVqOYk",
+  authDomain: "virtual-human-benchmark.firebaseapp.com",
+  projectId: "virtual-human-benchmark",
+  storageBucket: "virtual-human-benchmark.appspot.com",
+  messagingSenderId: "516637642270",
+  appId: "1:516637642270:web:1eb0d2b9f9aa2321f6a80f",
+};
+
+initializeApp(firebaseConfig);
+
+const storage = getStorage();
+
 const App = () => {
   const [isVisible, setIsVisible] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <div className="overflow-hidden bg-stone-50">
+      <Modal
+        open={modalOpen}
+        closeModal={closeModal}
+        title={"🚫 Unimplemented Feature"}
+        description={
+          "This feature is currently being worked on. It will be available in a future release. Sorry for the inconvenience."
+        }
+      />
       <HeroVideo />
       <div className="absolute rounded-b-3xl shadow-2xl inset-0  w-full max-h-screen aspect-video overflow-hidden bg-black/80 z-10 flex justify-center items-center">
         <motion.section
@@ -58,11 +94,63 @@ const App = () => {
             the BATAK reaction test.
           </motion.p>
           <motion.div variants={item} className="flex gap-4">
-            <Button text="Request a Demo" icon={<MdEmojiEvents />} />
-            <Button text="Contact Us" icon={<IoMdContact />} />
+            <Button
+              text="Request a Demo"
+              onClick={() => openModal()}
+              icon={<MdEmojiEvents />}
+            />
+            <Button
+              text="Contact Us"
+              onClick={() => openModal()}
+              icon={<IoMdContact />}
+            />
+            <Button
+              text="Data Viewer"
+              onClick={() => openModal()}
+              icon={<BiAnalyse />}
+            />
+            <Button
+              text="User Guide"
+              onClick={() => {
+                getDownloadURL(
+                  ref(
+                    storage,
+                    "gs://virtual-human-benchmark.appspot.com/User_Guide_VHB.pdf"
+                  )
+                )
+                  .then((url) => {
+                    // `url` is the download URL for 'images/stars.jpg'
+
+                    // This can be downloaded directly:
+                    const xhr = new XMLHttpRequest();
+                    xhr.responseType = "blob";
+                    xhr.onload = (event) => {
+                      const blob = URL.createObjectURL(xhr.response);
+                      var a = document.createElement("a") as HTMLAnchorElement;
+                      document.body.appendChild(a);
+                      a.href = blob;
+                      a.download = "User_Guide_VHB.pdf";
+                      a.click();
+                      window.URL.revokeObjectURL(blob);
+                    };
+                    xhr.open("GET", url);
+                    xhr.send();
+                  })
+                  .catch((error) => {
+                    // Handle any errors
+                    console.log(error);
+                  });
+              }}
+              icon={<HiOutlineDocumentDownload />}
+            />
           </motion.div>
-          <motion.p variants={item} className="text-white my-4 font-secondary">
-            Version 1.0
+          <motion.p
+            variants={item}
+            className="text-white flex gap-4 text-xs my-4 font-secondary"
+          >
+            <span>App: v1.0</span>
+            <span>Web: v1.0</span>
+            <span>Data Viewer: v1.0</span>
           </motion.p>
         </motion.section>
       </div>
@@ -234,20 +322,11 @@ const App = () => {
             applications data under the following file location. These include
             headsets such as the HP Reverb G2 and Oculus Rift.
           </p>
-          <div className="w-full bg-[#3D4451] text-white px-8 py-4 rounded-xl">
-            <div className="flex mb-4 gap-3">
-              <div className="aspect-square rounded-full bg-slate-500 w-3"></div>
-              <div className="aspect-square rounded-full bg-slate-500 w-3"></div>
-              <div className="aspect-square rounded-full bg-slate-500 w-3"></div>
-            </div>
-            <div>
-              <span className="font-code mr-4 text-slate-500">{">"}</span>
-              <code className="font-code">
-                %userprofile%\AppData\LocalLow\Capstone Project\Virtual Human
-                Benchmark
-              </code>
-            </div>
-          </div>
+
+          <Terminal
+            content="%userprofile%\AppData\LocalLow\Capstone Project\Virtual Human
+                Benchmark"
+          />
 
           <h3 className="font-primary">Android</h3>
           <p className="font-secondary">
@@ -255,19 +334,7 @@ const App = () => {
             standalone headsets), likely run within the Android OS. These
             include headsets such as the popular Oculus Quest 2.
           </p>
-          <div className="w-full bg-[#3D4451] text-white px-8 py-4 rounded-xl">
-            <div className="flex mb-4 gap-3">
-              <div className="aspect-square rounded-full bg-slate-500 w-3"></div>
-              <div className="aspect-square rounded-full bg-slate-500 w-3"></div>
-              <div className="aspect-square rounded-full bg-slate-500 w-3"></div>
-            </div>
-            <div>
-              <span className="font-code mr-4 text-slate-500">{">"}</span>
-              <code className="font-code">
-                /storage/emulated/0/Android/Virtual Human Benchmark/files
-              </code>
-            </div>
-          </div>
+          <Terminal content="/storage/emulated/0/Android/Virtual Human Benchmark/files" />
 
           <h2 className="font-primary text-orange-900">Want to know more?</h2>
           <p className="font-secondary">
