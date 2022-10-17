@@ -3,7 +3,8 @@ import HeroVideo from "./components/HeroVideo";
 import { MdEmojiEvents } from "react-icons/md";
 import { IoMdContact } from "react-icons/io";
 import { AnimatePresence, motion, Variants } from "framer-motion";
-import VhbVideo from "./assets/vhb_compressed_demo.mp4";
+import { lioshi as syntaxTheme } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import SyntaxHighlighter from "react-syntax-highlighter";
 import VhbReaction from "./assets/vhb_reaction.gif";
 import VhbAccumulator from "./assets/vhb_accumulator.gif";
 import VhbBanner from "./assets/banner.png";
@@ -12,11 +13,19 @@ import { AiFillCloseCircle, AiFillWarning } from "react-icons/ai";
 import { useState } from "react";
 import Modal from "./components/Modal";
 import Terminal from "./components/Terminal";
-
+import json from "./assets/samplejson.json";
 import { getStorage, getDownloadURL, ref } from "firebase/storage";
 import { initializeApp } from "firebase/app";
 import { BiAnalyse } from "react-icons/bi";
 import { HiOutlineDocumentDownload } from "react-icons/hi";
+import JSONModal from "./components/JSONModal";
+import CSVModal from "./components/CSVModal";
+import NewFeature from "./components/NewFeature";
+import Key from "./components/Key";
+import controller from "./assets/cmappings.png";
+import BoardLayoutItem from "./components/BoardLayoutItem";
+import BoardGrid from "./components/BoardGrid";
+
 const container: Variants = {
   hidden: { opacity: 0 },
   show: {
@@ -60,7 +69,7 @@ const App = () => {
   };
 
   return (
-    <div className="overflow-hidden bg-stone-50">
+    <div className="bg-stone-50">
       <Modal
         open={modalOpen}
         closeModal={closeModal}
@@ -177,7 +186,7 @@ const App = () => {
               </motion.div>
             )}
           </AnimatePresence>
-          {/* print lorem ipsum */}
+
           <p className="font-secondary">
             The VR Human Benchmark application (VHB) was developed as a tool to
             assist research into the benefits of virtual reality on a user's
@@ -195,9 +204,9 @@ const App = () => {
           />
           <h2 className="font-primary text-orange-900">Description</h2>
           <p className="font-secondary">
-            The project's current state (v1.0) is considered a stable release
-            version that contains three of the four outlined modes within the
-            project scope. These include:{" "}
+            The project's current state (v1.2) is considered a stable release
+            version that contains various improvements to the application. These
+            include:{" "}
           </p>
           <ul className="list-disc font-secondary">
             <li className="">
@@ -208,6 +217,12 @@ const App = () => {
               The purpose of this challenge is to assess the user's agility and
               reaction time.
             </li>
+            <li className="">
+              <b>Accumulator Test (Score-Variant)</b>: User's have unlimited
+              time to hit 30 targets. The purpose of this challenge is to assess
+              the user's agility and reaction time without needing to race the
+              clock.
+            </li>
             <li>
               <b>Reaction Test</b>: After a random interval the board will
               activate all targets, the user must then react (by pressing a
@@ -216,6 +231,12 @@ const App = () => {
               time is recorded. The purpose of this test is to primarily assess
               the user's ability to mentally process information as fast as
               possible.
+            </li>
+            <li className="">
+              <b>Reaction Test (Touch-Variant)</b>: The stimuli of the reaction
+              test has been changed from visual (the board lighting up) to
+              touch. The controllers will vibrate randomly, the user must react
+              to this vibration
             </li>
             <li>
               <b>Sequence Test</b>: The board will display a pattern of targets
@@ -226,12 +247,30 @@ const App = () => {
               cognitive processing, and judgement of the user. Note: Additional
               tests may be developed in the future.
             </li>
+            <li className="">
+              <b>Sequence Test (Stateful-Variant)</b>: The board will always
+              repeat the same pattern. However, each time the user successfully
+              completes the challenge, the board will add one more target to the
+              pattern. The purpose of this mode is to examine the short-term and
+              long-term memory, cognitive processing, and judgement of the user.
+            </li>
           </ul>
           <h2 className="font-primary text-orange-900">Game Modes</h2>
           <p className="font-secondary">
             As previously discussed, the current version of the Human Benchmark
-            application currently supports three game modes
+            application currently supports three game modes.
           </p>
+
+          <h3 className="font-primary text-orange-900">Variants</h3>
+          <NewFeature title="Variants" />
+          <p className="font-secondary">
+            The later versions support variants of the original three modes.
+            Variants are near-identical to their original however the
+            target/goals of the mode are slightly different. For example, the
+            reaction test has a variant that requires the user to react to a
+            when the controllers vibrate (touch/feel sensation).
+          </p>
+
           <h3 className="font-primary">Accumulator</h3>
           <p className="font-secondary">
             The BATAK lightboard will light up a single target at a time, the
@@ -295,7 +334,7 @@ const App = () => {
               <img src={VhbSequence} className="object-cover p-0 m-0" />
             </motion.div>
           </div>
-          <h2 className="font-primary text-orange-900">Data Export</h2>
+          <h2 className="font-primary text-orange-900">Data</h2>
           <p className="font-secondary">
             Upon completion of a test, a set of data will be generated providing
             insights into the performance indicators based upon the specific
@@ -313,9 +352,77 @@ const App = () => {
             >
               CSV
             </a>{" "}
-            file formats for use within other applications/services These can be
-            found at:
+            file formats for use within other applications/services.
           </p>
+          <div className="flex gap-4">
+            <JSONModal description={json} title="JSON" />
+            <CSVModal
+              title="CSV"
+              table={
+                <table className="table table-fixed w-full text-sm border-2 border-orange-600">
+                  <thead className="bg-orange-600 text-orange-50">
+                    <tr>
+                      <th>Time</th>
+                      <th>Target Time</th>
+                      <th>Start Time</th>
+                      <th>Reaction Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>45.95</td>
+                      <td>3.06</td>
+                      <td>41.89</td>
+                      <td>1.01</td>
+                    </tr>
+                    <tr>
+                      <td>47.93</td>
+                      <td>2.24</td>
+                      <td>4.89</td>
+                      <td>1.32</td>
+                    </tr>
+                    <tr>
+                      <td>51.24</td>
+                      <td>3.56</td>
+                      <td>41.29</td>
+                      <td>1.89</td>
+                    </tr>
+                  </tbody>
+                </table>
+              }
+            />
+          </div>
+          <h3 className="font-primary">Extended Dataset</h3>
+          <NewFeature title="Extended Datasets for all primary modes" />
+          <p className="font-secondary">
+            Recent updates {"(>v1.0)"} of the Virtual Human Benchmark
+            application now support more detailed datasets for all primary
+            modes. See below for the base structure of the new datasets.
+          </p>
+
+          <SyntaxHighlighter language="typescript" style={syntaxTheme}>
+            {`Data {
+  id: number;
+  test: {
+    name: string;
+    timeStarted: string | number;
+    timeEnded: string | number;
+    settings: {
+      [key: string]: any;
+    };
+  };
+  date: string | number;
+  user: {
+    alias: string;
+    age: number;
+  };
+  snapshots: ReactionSnapshot[] | AccumulatorSnapshot[] | SequenceSnapshot[];
+  misc: {
+    [key: string]: any;
+  };
+}`}
+          </SyntaxHighlighter>
+
           <h3 className="font-primary">Windows</h3>
           <p className="font-secondary">
             VR headsets that utilise the Windows operating system persist the
@@ -328,6 +435,11 @@ const App = () => {
                 Benchmark"
           />
 
+          <div className="flex flex-col gap-2 my-8">
+            <NewFeature title="You can now see your exports in the My Documents folder" />
+            <Terminal content="%userprofile%\Documents\VHB" />
+          </div>
+
           <h3 className="font-primary">Android</h3>
           <p className="font-secondary">
             VR headsets that do not require a Windows environment (i.e.,
@@ -336,11 +448,65 @@ const App = () => {
           </p>
           <Terminal content="/storage/emulated/0/Android/Virtual Human Benchmark/files" />
 
+          <h2 className="font-primary text-orange-900">
+            Keymappings (Windows-exlusive)
+          </h2>
+          <NewFeature title="Keymappings are now available for Windows users" />
+          <p className="font-secondary">
+            Keyboard mappings are now supported on Windows XR devices. See below
+            for the list of currently supported mappings.
+          </p>
+
+          <div className="grid grid-cols-3 gap-y-8">
+            <Key kbd="A" command="Select Accumulator" />
+            <Key kbd="S" command="Select Reaction" />
+            <Key kbd="D" command="Select Sequence" />
+            <Key kbd="Z" command="Select Accumulator (Variant)" />
+            <Key kbd="X" command="Select Reaction (Variant)" />
+            <Key kbd="C" command="Select Sequence (Variant)" />
+            <Key kbd="G" command="Change Board Layout" />
+            <Key kbd="V" command="Cancel Selection" />
+            <Key kbd="R" command="Run Selected Game" />
+          </div>
+
+          <h2 className="font-primary text-orange-900">Controller Mappings</h2>
+          <NewFeature title="Keymappings are now available for Windows users" />
+          <p className="font-secondary">
+            To ease usability, later VHB versions support multiple controller
+            mappings. See below for the list of currently supported mappings.
+            All modern controllers supporting the OpenVR API are supported.
+          </p>
+
+          <div className="flex w-full">
+            <img className="m-auto max-w-2xl" src={controller} />
+          </div>
+
+          <h2 className="font-primary text-orange-900">Board Layouts</h2>
+          <NewFeature title="Variety of the board" />
+          <p className="font-secondary">
+            The board now supports a variety of different layouts of the batak
+            buttons. To toggle between the layouts, press the{" "}
+            <b>change board layout</b> mapping on the keyboard or the
+            controller. All gamemodes form identical across different board
+            layouts
+          </p>
+
+          <BoardGrid />
+
+          <h2 className="font-primary text-orange-900">Levels</h2>
+          <NewFeature title="New stages" />
+          <p className="font-secondary">
+            User's are able to freely switch between levels, based on their
+            scene preferences. Most scenes act identical to one another, and are
+            purely for aethstetic. However, some are designed for considerations
+            such as mobile performance.
+          </p>
+
           <h2 className="font-primary text-orange-900">Want to know more?</h2>
           <p className="font-secondary">
             This product is still <b>early development</b>. Many features are
             subject to change. If you have any ideas, or suggestions please let
-            us know. Test pull
+            us know.
           </p>
 
           <h2 className="font-primary text-orange-900">Contact the team</h2>
