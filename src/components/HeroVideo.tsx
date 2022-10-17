@@ -1,4 +1,4 @@
-import VhbVideo from "../assets/vhb_compressed_demo.mp4";
+import VhbVideo from "../assets/vhb_compressed_notext.mp4";
 
 const HeroVideo = () => {
   return (

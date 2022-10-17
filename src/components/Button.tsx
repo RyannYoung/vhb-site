@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
   icon?: any;
+  variant?: "xs" | "sml" | "med" | "lrg" | "xlrg";
 }
 
 const Button = (props: Props) => {
