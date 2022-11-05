@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import { HiOutlineClipboardList } from "react-icons/hi";
 import useCopyToClipboard from "../hooks/useCopyToClipboard";
+import useWindowSize from "../hooks/useWindowSize";
 
 interface Props {
   content: string;
@@ -10,6 +11,8 @@ interface Props {
 const Terminal = ({ content }: Props) => {
   const [hover, setHover] = useState(false);
   const [value, copy] = useCopyToClipboard();
+
+  const { width, height } = useWindowSize();
 
   const handleMouseEnter = () => {
     setHover(true);
@@ -25,12 +28,14 @@ const Terminal = ({ content }: Props) => {
       onMouseLeave={() => handleMouseLeave()}
       className="w-full bg-[#3D4451] text-white px-8 py-4 rounded-xl"
     >
-      <div className="flex mb-4 gap-3">
-        <div className="aspect-square rounded-full bg-slate-500 w-3"></div>
-        <div className="aspect-square rounded-full bg-slate-500 w-3"></div>
-        <div className="aspect-square rounded-full bg-slate-500 w-3"></div>
-      </div>
-      <div className="flex">
+      {width > 600 && (
+        <div className="flex mb-4 gap-3">
+          <div className="aspect-square rounded-full bg-slate-500 w-3"></div>
+          <div className="aspect-square rounded-full bg-slate-500 w-3"></div>
+          <div className="aspect-square rounded-full bg-slate-500 w-3"></div>
+        </div>
+      )}
+      <div className="flex items-center overflow-x-scroll whitespace-nowrap">
         <span className="font-code mr-4 text-slate-500">{">"}</span>
         <code className="font-code">{content} </code>
         <AnimatePresence>

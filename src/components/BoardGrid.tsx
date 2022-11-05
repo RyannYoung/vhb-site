@@ -18,7 +18,7 @@ interface Props {
 
 const BoardGrid = () => {
   return (
-    <div className="grid grid-cols-4 gap-6">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
       <BoardLayoutItem img={three3} title="3x3" />
       <BoardLayoutItem img={borders} title="Borders" />
       <BoardLayoutItem img={cross} title="Cross" />

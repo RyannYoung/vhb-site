@@ -1,8 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  text: string;
+interface Props extends React.ComponentPropsWithoutRef<"button"> {
+  text?: string;
   icon?: any;
   variant?: "xs" | "sml" | "med" | "lrg" | "xlrg";
 }
@@ -17,7 +17,7 @@ const Button = (props: Props) => {
         backgroundColor: "rgb(154 52 18)",
         transition: { duration: 0.2 },
       }}
-      className={`bg-orange-700 px-4 flex items-center py-2 rounded-lg uppercase font-secondary text-white tracking-wider ${props.className}`}
+      className={`bg-orange-700 px-4 flex text-xs  items-center py-2 rounded-lg uppercase font-secondary text-white tracking-wider ${props.className}`}
     >
       {props.icon && <div className="mr-1">{props.icon}</div>}
       {props.text}
