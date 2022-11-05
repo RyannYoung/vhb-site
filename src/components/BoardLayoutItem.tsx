@@ -11,7 +11,7 @@ const BoardLayoutItem = ({ img, title }: Props) => {
       <div className="rounded overflow-hidden flex drop-shadow-md">
         <img className="rounded-lg m-0" src={img} alt={title} />
       </div>
-      <span className="leading-relaxed font-primary text-sm my-1 text-orange-900 tracking-widest px-2">
+      <span className="leading-relaxed font-primary text-center text-sm my-1 text-orange-900 tracking-widest px-2">
         {title}
       </span>
     </div>

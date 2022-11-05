@@ -3,7 +3,7 @@ import { Fragment, useEffect, useState } from "react";
 import { MdEmojiEvents } from "react-icons/md";
 import Button from "./Button";
 
-interface Props {
+interface Props extends React.ComponentPropsWithRef<"div"> {
   title: string;
   table: React.ReactNode;
 }
@@ -20,7 +20,7 @@ const CSVModal = ({ table, title }: Props) => {
   };
 
   return (
-    <>
+    <div>
       <Button
         text="View Sample CSV"
         className="text-xs"
@@ -76,7 +76,7 @@ const CSVModal = ({ table, title }: Props) => {
           </div>
         </Dialog>
       </Transition>
-    </>
+    </div>
   );
 };
 

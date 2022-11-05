@@ -3,12 +3,12 @@ import { Fragment, useEffect, useState } from "react";
 import { MdEmojiEvents } from "react-icons/md";
 import Button from "./Button";
 
-interface Props {
+interface Props extends React.ComponentPropsWithRef<"div"> {
   title: string;
   description: object;
 }
 
-const JSONModal = ({ description, title }: Props) => {
+const JSONModal = ({ description, title, ...rest }: Props) => {
   let [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => {
@@ -20,10 +20,10 @@ const JSONModal = ({ description, title }: Props) => {
   };
 
   return (
-    <>
+    <div {...rest}>
       <Button
         text="View Sample JSON"
-        className="text-xs"
+        className="lg:text-xs"
         onClick={() => openModal()}
         icon={<MdEmojiEvents />}
       />
@@ -80,7 +80,7 @@ const JSONModal = ({ description, title }: Props) => {
           </div>
         </Dialog>
       </Transition>
-    </>
+    </div>
   );
 };
 
