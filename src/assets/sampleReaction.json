@@ -1,0 +1,80 @@
+{
+  "id": "a3138187-6de3-4698-b16b-9a709ee832e7",
+  "date": "2022-09-12T21:49:54.5746445+10:00",
+  "user": {
+    "alias": "Ryan",
+    "age": 22
+  },
+  "test": {
+    "name": "ReactionSnapshotEx",
+    "timeStarted": "2022-09-12T21:49:32.0771986+10:00",
+    "timeFinished": "2022-09-12T21:49:54.5721459+10:00",
+    "summary": {
+      "activationHands": null,
+      "averageReactionTime": 0.439709485,
+      "totalAttempts": 5.0,
+      "taskDuration": 22.4949473,
+      "slowestTime": 0.356842041,
+      "fastestTime": 0.628234863
+    },
+    "settings": null
+  },
+  "snapshots": [
+    {
+      "waitTime": 4.52975035,
+      "reactionTime": 0.356842041,
+      "attempt": 1,
+      "bounds": {
+        "min": 1.0,
+        "max": 5.0
+      },
+      "id": "e781655f-f98f-4518-9bf2-6725c31559b3",
+      "snapshotTime": "2022-09-12T21:49:36.9611982+10:00"
+    },
+    {
+      "waitTime": 4.37557364,
+      "reactionTime": 0.628234863,
+      "attempt": 2,
+      "bounds": {
+        "min": 1.0,
+        "max": 5.0
+      },
+      "id": "476349bb-69b9-40fc-b96f-129eb2b85b65",
+      "snapshotTime": "2022-09-12T21:49:41.9636993+10:00"
+    },
+    {
+      "waitTime": 1.653851,
+      "reactionTime": 0.4046936,
+      "attempt": 3,
+      "bounds": {
+        "min": 1.0,
+        "max": 5.0
+      },
+      "id": "3023b604-47d6-495a-87da-542c52515347",
+      "snapshotTime": "2022-09-12T21:49:44.0221989+10:00"
+    },
+    {
+      "waitTime": 4.80462742,
+      "reactionTime": 0.4167328,
+      "attempt": 4,
+      "bounds": {
+        "min": 1.0,
+        "max": 5.0
+      },
+      "id": "15b43ed2-7db1-4bde-84ee-27406b039a06",
+      "snapshotTime": "2022-09-12T21:49:49.243644+10:00"
+    },
+    {
+      "waitTime": 4.594616,
+      "reactionTime": 0.392044067,
+      "attempt": 5,
+      "bounds": {
+        "min": 1.0,
+        "max": 5.0
+      },
+      "id": "3f731339-3545-47f7-ba67-eef9c6b62bc7",
+      "snapshotTime": "2022-09-12T21:49:54.5706459+10:00"
+    }
+  ],
+  "misc": null
+}

@@ -55,9 +55,14 @@ const CSVModal = ({ table, title }: Props) => {
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-md bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg font-medium leading-6 text-gray-900 flex flex-col gap-2"
                   >
                     {title}
+                    <span className="text-xs font-normal italic">
+                      Note: The CSV file format output is now deprecated as of
+                      version 1.2. For easier viewing, it is now recommended to
+                      use VHB Insights with the extended data files
+                    </span>
                   </Dialog.Title>
                   <div className="mt-2">{table}</div>
 
@@ -67,7 +72,7 @@ const CSVModal = ({ table, title }: Props) => {
                       className="inline-flex justify-center rounded-md border border-transparent bg-orange-100 px-4 py-2 text-sm font-medium text-orange-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={closeModal}
                     >
-                      Got it, thanks!
+                      Close
                     </button>
                   </div>
                 </Dialog.Panel>

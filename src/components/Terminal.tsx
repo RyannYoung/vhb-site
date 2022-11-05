@@ -35,7 +35,7 @@ const Terminal = ({ content }: Props) => {
           <div className="aspect-square rounded-full bg-slate-500 w-3"></div>
         </div>
       )}
-      <div className="flex items-center overflow-x-scroll whitespace-nowrap">
+      <div className="flex items-center overflow-x-scroll py-4 lg:py-0 scrollbar-thumb-gray-500 scrollbar-track-gray-400 scrollbar-thin whitespace-nowrap">
         <span className="font-code mr-4 text-slate-500">{">"}</span>
         <code className="font-code">{content} </code>
         <AnimatePresence>

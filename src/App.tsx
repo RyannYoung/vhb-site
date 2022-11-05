@@ -30,6 +30,7 @@ import TheLobby from "./assets/levels/the-lobby-upgraded.png";
 import Insights from "./assets/insights.png";
 import Insights2 from "./assets/insights-2.png";
 import useWindowSize from "./hooks/useWindowSize";
+import sampleJSON from "./assets/sampleReaction.json";
 
 const container: Variants = {
   hidden: { opacity: 0 },
@@ -86,7 +87,7 @@ const App = () => {
         }
       />
       <HeroVideo />
-      <div className="absolute rounded-b-3xl shadow-2xl inset-0 w-full max-h-screen aspect-video overflow-hidden bg-black/80 z-10 flex justify-center items-center">
+      <div className="absolute rounded-b-xl lg:rounded-b-3xl shadow-2xl inset-0 w-full max-h-screen aspect-video overflow-hidden bg-black/80 z-10 flex justify-center items-center">
         <motion.section
           initial="hidden"
           animate="show"
@@ -113,13 +114,122 @@ const App = () => {
               </span>
             ) : (
               <p className="text-center">
-                A virtual reality-based assessment tool for use in health and
-                sports-science
+                The VR Human Benchmark application (VHB) was developed as a tool
+                to assist research into the benefits of virtual reality on a
+                user's cognitive and physical abilities. The application
+                contains a variety of tests derived from both the Human
+                Benchmark web application, and the BATAK reaction test.
               </p>
             )}
           </motion.p>
           {width > 600 && (
-            <motion.div variants={item} className="flex gap-4">
+            <>
+              <motion.div
+                variants={item}
+                className="grid gap-4 lg:grid-cols-4 grid-cols-2"
+              >
+                <Button
+                  text="Request a Demo"
+                  onClick={() => openModal()}
+                  icon={<MdEmojiEvents />}
+                />
+                <Button
+                  text="Contact Us"
+                  onClick={() => openModal()}
+                  icon={<IoMdContact />}
+                />
+                <Button
+                  text="Data Viewer"
+                  onClick={() => openModal()}
+                  icon={<BiAnalyse />}
+                />
+                <Button
+                  text="User Guide"
+                  onClick={() => {
+                    getDownloadURL(
+                      ref(
+                        storage,
+                        "gs://virtual-human-benchmark.appspot.com/User_Guide_VHB.pdf"
+                      )
+                    )
+                      .then((url) => {
+                        // `url` is the download URL for 'images/stars.jpg'
+
+                        // This can be downloaded directly:
+                        const xhr = new XMLHttpRequest();
+                        xhr.responseType = "blob";
+                        xhr.onload = (event) => {
+                          const blob = URL.createObjectURL(xhr.response);
+                          var a = document.createElement(
+                            "a"
+                          ) as HTMLAnchorElement;
+                          document.body.appendChild(a);
+                          a.href = blob;
+                          a.download = "User_Guide_VHB.pdf";
+                          a.click();
+                          window.URL.revokeObjectURL(blob);
+                        };
+                        xhr.open("GET", url);
+                        xhr.send();
+                      })
+                      .catch((error) => {
+                        // Handle any errors
+                        console.log(error);
+                      });
+                  }}
+                  icon={<HiOutlineDocumentDownload />}
+                />
+              </motion.div>
+              <motion.p
+                variants={item}
+                className="text-white flex gap-4 lg:text-xs my-4 font-secondary"
+              >
+                <span>App: v1.0</span>
+                <span>Web: v1.0</span>
+                <span>Data Viewer: v1.0</span>
+              </motion.p>
+            </>
+          )}
+        </motion.section>
+      </div>
+
+      <main className="w-full flex justify-center">
+        <section className="prose-sm lg:prose-lg lg:text-left text-justify max-w-xs sm:max-w-sm md:max-w-md lg:max-w-4xl">
+          <h1 className="font-primary text-center lg:text-left">
+            Virtual Human Benchmark
+          </h1>
+          <AnimatePresence>
+            {isVisible && (
+              <motion.div
+                exit={{ opacity: 0 }}
+                className="text-orange-50 text-left shadow font-secondary px-4 py-2 rounded-xl bg-orange-500 flex items-center gap-4 font-normal w-full"
+              >
+                <AiFillWarning className="text-lg lg:text-2xl" />
+                <span className="text-xs md:text-base">
+                  Please note: this product is still in early development.
+                </span>
+                <button
+                  onClick={() => setIsVisible(false)}
+                  className="ml-auto lg:text-2xl"
+                >
+                  <AiFillCloseCircle />
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <p className="font-secondary text-xs lg:text-base">
+            The VR Human Benchmark application (VHB) was developed as a tool to
+            assist research into the benefits of virtual reality on a user's
+            cognitive and physical abilities. The application contains a variety
+            of tests derived from both the Human Benchmark web application, and
+            the BATAK reaction test.
+          </p>
+          {width < 600 && (
+            <motion.div
+              variants={item}
+              className="text-xs grid gap-2 lg:grid-cols-4 grid-cols-2"
+            >
               <Button
                 text="Request a Demo"
                 onClick={() => openModal()}
@@ -173,49 +283,6 @@ const App = () => {
               />
             </motion.div>
           )}
-          <motion.p
-            variants={item}
-            className="text-white flex gap-4 text-xs my-4 font-secondary"
-          >
-            <span>App: v1.0</span>
-            <span>Web: v1.0</span>
-            <span>Data Viewer: v1.0</span>
-          </motion.p>
-        </motion.section>
-      </div>
-
-      <main className="w-full flex justify-center">
-        <section className="prose-sm lg:prose-lg lg:text-left text-justify max-w-xs sm:max-w-sm md:max-w-md lg:max-w-4xl">
-          <h1 className="font-primary text-center lg:text-left">
-            Virtual Human Benchmark
-          </h1>
-          <AnimatePresence>
-            {isVisible && (
-              <motion.div
-                exit={{ opacity: 0 }}
-                className="text-orange-50 shadow font-secondary px-4 py-2 rounded-xl bg-orange-500 flex items-center font-normal w-full"
-              >
-                <AiFillWarning className="mr-2 text-2xl" />
-                <span className="text-xs md:text-base">
-                  Please note: this product is still in early development.
-                </span>
-                <button
-                  onClick={() => setIsVisible(false)}
-                  className="ml-auto text-2xl"
-                >
-                  <AiFillCloseCircle />
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <p className="font-secondary text-xs lg:text-base">
-            The VR Human Benchmark application (VHB) was developed as a tool to
-            assist research into the benefits of virtual reality on a user's
-            cognitive and physical abilities. The application contains a variety
-            of tests derived from both the Human Benchmark web application, and
-            the BATAK reaction test.
-          </p>
           <motion.img
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -311,14 +378,14 @@ const App = () => {
                 animate={{ opacity: 0 }}
                 transition={{ duration: 0.5, delay: 0.5 }}
                 viewport={{ margin: "-200px" }}
-                className="rounded-xl shadow-2xl overflow-hidden bg-orange-600"
+                className="rounded-xl shadow-2xl overflow-hidden bg-orange-600 m-0"
               >
                 <video
                   src={VhbAccumulator}
                   autoPlay
                   loop
                   muted
-                  className="object-cover p-0 m-0"
+                  className="object-contain p-0 m-0 lg:m-0 h-full"
                 />
               </motion.div>
             ) : (
@@ -343,36 +410,34 @@ const App = () => {
             process information as fast as possible.
           </p>
           <div className="lg:px-32">
-            <div className="lg:px-32">
-              {width > 768 ? (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  animate={{ opacity: 0 }}
-                  transition={{ duration: 0.5, delay: 0.5 }}
-                  viewport={{ margin: "-200px" }}
-                  className="rounded-xl shadow-2xl overflow-hidden bg-orange-600"
-                >
-                  <video
-                    src={VhbReaction}
-                    autoPlay
-                    loop
-                    muted
-                    className="object-contain p-0 m-0"
-                  />
-                </motion.div>
-              ) : (
-                <div className="rounded-xl shadow-2xl overflow-hidden bg-orange-600">
-                  <video
-                    src={VhbReaction}
-                    autoPlay
-                    loop
-                    muted
-                    className="object-contain p-0 m-0"
-                  />
-                </div>
-              )}
-            </div>
+            {width > 768 ? (
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                animate={{ opacity: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                viewport={{ margin: "-200px" }}
+                className="rounded-xl shadow-2xl overflow-hidden bg-orange-600"
+              >
+                <video
+                  src={VhbReaction}
+                  autoPlay
+                  loop
+                  muted
+                  className="object-contain p-0 m-0 lg:m-0 h-full"
+                />
+              </motion.div>
+            ) : (
+              <div className="rounded-xl shadow-2xl overflow-hidden bg-orange-600">
+                <video
+                  src={VhbReaction}
+                  autoPlay
+                  loop
+                  muted
+                  className="object-contain p-0 m-0"
+                />
+              </div>
+            )}
           </div>
           <h3 className="font-primary">Sequence</h3>
           <p className="font-secondary">
@@ -385,36 +450,34 @@ const App = () => {
             the future.
           </p>
           <div className="lg:px-32">
-            <div className="lg:px-32">
-              {width > 768 ? (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  animate={{ opacity: 0 }}
-                  transition={{ duration: 0.5, delay: 0.5 }}
-                  viewport={{ margin: "-200px" }}
-                  className="rounded-xl shadow-2xl overflow-hidden bg-orange-600"
-                >
-                  <video
-                    src={VhbSequence}
-                    autoPlay
-                    loop
-                    muted
-                    className="object-contain p-0 m-0"
-                  />
-                </motion.div>
-              ) : (
-                <div className="rounded-xl shadow-2xl overflow-hidden bg-orange-600">
-                  <video
-                    src={VhbSequence}
-                    autoPlay
-                    loop
-                    muted
-                    className="object-contain p-0 m-0"
-                  />
-                </div>
-              )}
-            </div>
+            {width > 768 ? (
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                animate={{ opacity: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                viewport={{ margin: "-200px" }}
+                className="rounded-xl shadow-2xl overflow-hidden bg-orange-600"
+              >
+                <video
+                  src={VhbSequence}
+                  autoPlay
+                  loop
+                  muted
+                  className="object-cover p-0 lg:m-0 lgp-0 m-0"
+                />
+              </motion.div>
+            ) : (
+              <div className="rounded-xl shadow-2xl overflow-hidden bg-orange-600">
+                <video
+                  src={VhbSequence}
+                  autoPlay
+                  loop
+                  muted
+                  className="object-contain p-0 m-0 lg:m-0"
+                />
+              </div>
+            )}
           </div>
           <h2 className="font-primary text-orange-900">Data</h2>
           <p className="font-secondary">
@@ -436,34 +499,34 @@ const App = () => {
             </a>{" "}
             file formats for use within other applications/services.
           </p>
-          <div className="grid gap-4 lg:grid-cols-2">
-            <JSONModal description={json} title="JSON" />
+          <div className="grid gap-4">
+            <JSONModal description={sampleJSON} title="JSON" />
             <CSVModal
               title="CSV"
               table={
-                <table className="table table-fixed w-fit text-sm border-2 border-orange-600">
-                  <thead className="bg-orange-600 text-orange-50">
-                    <tr>
+                <table className="table table-fixed w-full text-sm border-orange-600 border-2 overflow-hidden rounded-md">
+                  <thead className="bg-orange-600 text-orange-50 border">
+                    <tr className="text-center">
                       <th>Time</th>
                       <th>Target Time</th>
                       <th>Start Time</th>
                       <th>Reaction Time</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
+                  <tbody className="text-center border-2">
+                    <tr className="border-2">
                       <td>45.95</td>
                       <td>3.06</td>
                       <td>41.89</td>
                       <td>1.01</td>
                     </tr>
-                    <tr>
+                    <tr className="border-2">
                       <td>47.93</td>
                       <td>2.24</td>
                       <td>4.89</td>
                       <td>1.32</td>
                     </tr>
-                    <tr>
+                    <tr className="border-2">
                       <td>51.24</td>
                       <td>3.56</td>
                       <td>41.29</td>
@@ -488,9 +551,9 @@ const App = () => {
             application now support more detailed datasets for all primary
             modes. See below for the base structure of the new datasets.
           </p>
-
-          <SyntaxHighlighter language="typescript" style={syntaxTheme}>
-            {`Data {
+          <div className="scrollbar-thumb-gray-500 scrollbar-track-gray-400 scrollbar-thin">
+            <SyntaxHighlighter language="typescript" style={syntaxTheme}>
+              {`Data {
   id: number;
   test: {
     name: string;
@@ -510,7 +573,8 @@ const App = () => {
     [key: string]: any;
   };
 }`}
-          </SyntaxHighlighter>
+            </SyntaxHighlighter>
+          </div>
 
           <h3 className="font-primary">Windows</h3>
           <p className="font-secondary">
@@ -727,16 +791,16 @@ const App = () => {
           </div>
         </section>
       </main>
-      <footer className="w-full bg-gray-800 rounded-t-xl">
-        <div className="flex justify-center w-full p-12">
-          <div className="grid lg:grid-cols-3 max-w-6xl gap-8 text-center">
-            <div className="text-2xl text-white font-primary tracking-wider text-center">
+      <footer className="w-full bg-gray-800 rounded-t-xl bg-gradient-to-tr from-gray-800 to-gray-700">
+        <div className="flex justify-center w-full py-4 lg:text-base text-sm px-12 lg:px-0">
+          <div className="grid lg:grid-cols-3 max-w-6xl gap-4 text-center">
+            <div className="text-lg lg:text-2xl text-white font-primary tracking-wider text-center">
               <p>Virtual Human Benchmark</p>
             </div>
-            <span className="text-white font-secondary text-center tracking-widest">
+            <span className="uppercase text-white font-secondary text-center tracking-widest">
               Created by the 2022 Project Team at the University of Canberra
             </span>
-            <span className="font-code text-white text-center">
+            <span className="text-sm uppercase font-secondary text-white text-center">
               All rights reserved
             </span>
           </div>
