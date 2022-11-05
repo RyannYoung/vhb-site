@@ -17,7 +17,7 @@ const Button = (props: Props) => {
         backgroundColor: "rgb(154 52 18)",
         transition: { duration: 0.2 },
       }}
-      className={`bg-orange-700 px-4 flex text-xs  items-center py-2 rounded-lg uppercase font-secondary text-white tracking-wider ${props.className}`}
+      className={`bg-orange-600 px-4 flex text-xs  items-center py-2 rounded-lg uppercase font-secondary text-white tracking-wider ${props.className}`}
     >
       {props.icon && <div className="mr-1">{props.icon}</div>}
       {props.text}

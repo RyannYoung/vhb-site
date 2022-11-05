@@ -1,0 +1,20 @@
+Data {
+  id: number;
+  test: {
+    name: string;
+    timeStarted: string | number;
+    timeEnded: string | number;
+    settings: {
+      [key: string]: any;
+    };
+  };
+  date: string | number;
+  user: {
+    alias: string;
+    age: number;
+  };
+  snapshots: ReactionSnapshot[] | AccumulatorSnapshot[] | SequenceSnapshot[];
+  misc: {
+    [key: string]: any;
+  };
+}
